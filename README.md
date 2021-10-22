@@ -7,7 +7,7 @@ HOWEVER, the people on the beach get in Galleria's way as she tries to pick up t
 
 Moves: Move Galleria up and down to help her pick up trash and avoid hitting the people laying on the beach
 
-<img src="images/wireFrame.jpeg" />
+![WireFrame Image] (https://whimsical.com/5S3NY3SkC95JhYpXTakSuz)
 
 ##MVP Section
 -Create birds-eye game screen
