@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
     <title>Galleria Saves The Planet</title>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <div id="container">
+        <aside id="top-left"><h1>Galleria Saves The Planet</h1></aside>
+        <aside id="top-right"><h2 id="movement"></h2></aside>
+        <main>
+            <canvas id="canvas"><!-- the game layout --></canvas>
+        </main>
+        <aside id="btm-left"><button>Start Game</button></aside>
+        <aside id="btm-right"><h2 id="status"></h2></aside>
+      </div>
     <script src="js/script.js"></script>
 </body>
 </html>
