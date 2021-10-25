@@ -17,12 +17,17 @@
 <body>
     <div id="container">
         <aside id="top-left"><h1>Galleria Saves The Planet</h1></aside>
-        <aside id="top-right"><h3 id="time">Time:</h3><h3 id="trash">Time:</h3></aside>
+            <aside id="top-right">
+                <div class="scoreTime">
+                    <h3 id="time">Time:</h3>
+                    <h3 id="trash">Trash:</h3>
+                </div>
+            </aside>
         <main>
             <canvas id="canvas"><!-- the game layout --></canvas>
         </main>
         <aside id="btm-left"><button type="button" id="startButton" class="btn btn-light">Start Game</button></aside>
-        <aside id="btm-right"><h3 id="status"></h3></aside>
+        <aside id="btm-right"><h3 id="status">Move Galleria up and down to help her pick up trash and avoid hitting the Beach Goers before time runs out</h3></aside>
       </div>
     <script src="js/script.js"></script>
 </body>
