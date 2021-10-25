@@ -24,8 +24,8 @@ How to Play: Move Galleria up and down to help her pick up trash and avoid hitti
 
 ## Stretch Goals
 
-- Have Galleria only move up and down
-- Have trash and Beach Goers slide horizontally into screen, in random positions
-- Picking up trash adds to Galleria's trashbag and display that in the point system
-- Hitting Beach Goers lessens the trash in Galleria's bag in the point system
+- Have time more faster the lower the timer gets
+- Have a 
+- 
+- 
 

@@ -10,13 +10,17 @@ game.setAttribute('height', 150)
 ctx.width = game.width
 ctx.height = game.height
 let trashArray = []
+let beachGoerArray = []
 
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300)
-    if (beachGoer.alive && garbage.alive) {
+    if (beachGoer.alive) {
         beachGoer.render()
+    }
+    if (garbage.alive) {
         garbage.render()
+        trashMovement()
     }
     galleria.render()
 }
@@ -24,7 +28,6 @@ const gameLoop = () => {
 function gameStart() {
     inscrtuions.innerText = ` `
     gameTimer()
-    gameLoop()
 }
 
 // timer to go down after instructions
@@ -66,17 +69,22 @@ function heroRender (x, y, color, width, height) {
     }
 }
 let galleria = new heroRender(250, 50, '#FFFFFF', 10, 30)
+
 // console.log('this is hero', galleria)
 const galleriaMovement = (e) => {
     switch(e.keyCode) {
         case (38): 
+        // moves her upward
         galleria.y -= 10
+        // prevents her from going off canvas
         if (galleria.y <= 0) {
             galleria.y = 0
         }
         break 
         case (40):
+        // moves her downwards
         galleria.y += 10
+        // prevents her from going off canvas
         if (galleria.y + galleria.height >= ctx.height) {
             galleria.y = ctx.height - galleria.height
         }
@@ -87,20 +95,37 @@ const galleriaMovement = (e) => {
 function trashRender (x, y, color, width, height) {
     this.x = x
     this.y = y
-    this.color = color
     this.height = height
+    this.color = color
     this.width = width
     this.alive = true
+    // this.moveX = 4
     this.render = function() {
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
-let garbage = new trashRender(10, 10, 'red', 10, 10)
 
-// Galleria Movement
+let garbage = new trashRender(5, 10, 'red', 10, 20)
+
+// Trash movement fucntion
+const trashMovement = () => {
+    if (garbage.alive) {
+        garbage.x += 5
+        trashArray.push(garbage)
+        console.log(trashArray.length)
+    }
+    for (let i = 0; i < trashArray.length; i++) {
+        garbage[i]
+        if (garbage.alive && garbage.x + garbage.width >= ctx.width) {
+            garbage.alive = false
+        }
+    }
+
+}
 
 
+// BeachGoer Movement
 function beachGoersRender (x, y, color, width, height) {
     this.x = x
     this.y = y
@@ -119,5 +144,5 @@ let beachGoer = new beachGoersRender(10, 70, 'lightgreen', 20, 40)
 let stop = () => {clearInterval(gameInterval)}
 
 document.addEventListener('keydown', galleriaMovement)
-let gameInterval = setInterval(gameLoop, 70)
+let gameInterval = setInterval(gameLoop, 60)
 startGame.addEventListener('click', gameStart)
