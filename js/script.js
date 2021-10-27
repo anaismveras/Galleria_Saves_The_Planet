@@ -13,26 +13,19 @@ ctx.minY = game.height + 5
 ctx.maxY = game.height - 5
 let trashArray = []
 let beachGoerArray = []
+let points = 0
 
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300)
     trashArray.forEach((trashitem) => {
-        // trashitem.render()
+        trashitem.render()
+        trashitem.x += 3
+        ditectTrashHit()
     })
-    // if (beachGoer.alive) {
-        //     beachGoer.render()
-        // }
-    // if (garbage.alive) {
-    //         garbage.render()
-    //         trashMovement()
-    // }
+    trashPoints.innerText = `Trash: ${points}/40`
     galleria.render()
-}
-
-function gameStart() {
-    inscrtuions.innerText = ` `
-    gameTimer()
+    inscrtuions.innerText = ' '
 }
 
 // timer to go down after instructions
@@ -110,7 +103,7 @@ function Trash (x, y, color, width, height) {
     }
 }
 
-const trashInterval = setInterval(()=> {
+const createTrash = () => {
     let generateRandomY = Math.floor(Math.random() * ctx.height)
     let garbage = new Trash(1, generateRandomY, 'red', 10, 20)
     if (garbage.y <=0) {
@@ -121,20 +114,24 @@ const trashInterval = setInterval(()=> {
     }
     trashArray.push(garbage)
     console.log(trashArray)
-}, 1000)
+}
+const trashInterval = setInterval(createTrash, 2500)
 
-
-// trash array holds all the created trash items
-// gameloop is going to run a trashrendeing fucntion 
-// trashredning function is going to loop over the trash array
-// and call trash[i].render for every item in the array
-
-// Trash movement fucntion
-const trashMovement = () => {
-    if (garbage.alive) {
-        garbage.x += 3 
+const ditectTrashHit = () => {
+    for(let i = 0; i < trashArray.length; i++) {
+        if (galleria.x < trashArray[i].x + trashArray[i].width &&
+            galleria.x + galleria.width > trashArray[i].x && 
+            galleria.y < trashArray[i].y + trashArray[i].height &&
+            galleria.y + galleria.height > trashArray[i].y) {
+                trashArray[i].alive = false 
+                if (trashArray[i].alive === false) {
+                    trashArray.splice(i, 1)
+                    points++
+                }
+        }
     }
 }
+
 
 // BeachGoer Movement
 function beachGoersRender (x, y, color, width, height) {
@@ -155,5 +152,5 @@ let beachGoer = new beachGoersRender(10, 70, 'lightgreen', 20, 40)
 let stop = () => {clearInterval(gameInterval)}
 
 document.addEventListener('keydown', galleriaMovement)
-let gameInterval = setInterval(gameLoop, 60)
-startGame.addEventListener('click', gameStart)
+let gameInterval = () => {setInterval(gameLoop, 70)}
+startGame.addEventListener('click', gameInterval)
