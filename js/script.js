@@ -117,6 +117,7 @@ const createTrash = () => {
 }
 const trashInterval = setInterval(createTrash, 2500)
 
+// detecting if trash is hit than one point will minus from trash
 const ditectTrashHit = () => {
     for(let i = 0; i < trashArray.length; i++) {
         if (galleria.x < trashArray[i].x + trashArray[i].width &&
@@ -132,9 +133,8 @@ const ditectTrashHit = () => {
     }
 }
 
-
 // BeachGoer Movement
-function beachGoersRender (x, y, color, width, height) {
+function BeachGoer (x, y, color, width, height) {
     this.x = x
     this.y = y
     this.color = color
@@ -146,11 +146,27 @@ function beachGoersRender (x, y, color, width, height) {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
-let beachGoer = new beachGoersRender(10, 70, 'lightgreen', 20, 40)
+
+const createBeachGoer = () => {
+    let generateRandomY = Math.floor(Math.random() * ctx.height)
+    let beachGoers = new BeachGoer(1, generateRandomY, 'lightgreen', 20, 40)
+    if (beachGoers.y <=0) {
+        beachGoers.y = 0
+    }
+    if (beachGoers.y + beachGoers.height >= ctx.height) {
+        beachGoers.y = ctx.height - beachGoers.height
+    }
+    beachGoerArray.push(beachGoers)
+    console.log(beachGoerArray)
+}
+const beachGoerInterval = setInterval(createBeachGoer, 1250)
 
 
 let stop = () => {clearInterval(gameInterval)}
 
 document.addEventListener('keydown', galleriaMovement)
 let gameInterval = () => {setInterval(gameLoop, 70)}
-startGame.addEventListener('click', gameInterval)
+startGame.addEventListener('click', () => {
+    gameTimer()
+    gameInterval()
+})
