@@ -9,19 +9,24 @@ game.setAttribute('width', 300)
 game.setAttribute('height', 150)
 ctx.width = game.width
 ctx.height = game.height
+ctx.minY = game.height + 5
+ctx.maxY = game.height - 5
 let trashArray = []
 let beachGoerArray = []
 
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300)
-    if (beachGoer.alive) {
-        beachGoer.render()
-    }
-    if (garbage.alive) {
-        garbage.render()
-        trashMovement()
-    }
+    trashArray.forEach((trashitem) => {
+        // trashitem.render()
+    })
+    // if (beachGoer.alive) {
+        //     beachGoer.render()
+        // }
+    // if (garbage.alive) {
+    //         garbage.render()
+    //         trashMovement()
+    // }
     galleria.render()
 }
 
@@ -76,7 +81,7 @@ const galleriaMovement = (e) => {
         case (38): 
         // moves her upward
         galleria.y -= 10
-        // prevents her from going off canvas
+        // prevents her from going off canvas-up
         if (galleria.y <= 0) {
             galleria.y = 0
         }
@@ -84,7 +89,7 @@ const galleriaMovement = (e) => {
         case (40):
         // moves her downwards
         galleria.y += 10
-        // prevents her from going off canvas
+        // prevents her from going off canvas-down
         if (galleria.y + galleria.height >= ctx.height) {
             galleria.y = ctx.height - galleria.height
         }
@@ -92,38 +97,44 @@ const galleriaMovement = (e) => {
     }
 }
 
-function trashRender (x, y, color, width, height) {
+function Trash (x, y, color, width, height) {
     this.x = x
     this.y = y
     this.height = height
     this.color = color
     this.width = width
     this.alive = true
-    // this.moveX = 4
     this.render = function() {
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
 
-let garbage = new trashRender(5, 10, 'red', 10, 20)
+const trashInterval = setInterval(()=> {
+    let generateRandomY = Math.floor(Math.random() * ctx.height)
+    let garbage = new Trash(1, generateRandomY, 'red', 10, 20)
+    if (garbage.y <=0) {
+        garbage.y = 0
+    }
+    if (garbage.y + garbage.height >= ctx.height) {
+        garbage.y = ctx.height - garbage.height
+    }
+    trashArray.push(garbage)
+    console.log(trashArray)
+}, 1000)
+
+
+// trash array holds all the created trash items
+// gameloop is going to run a trashrendeing fucntion 
+// trashredning function is going to loop over the trash array
+// and call trash[i].render for every item in the array
 
 // Trash movement fucntion
 const trashMovement = () => {
     if (garbage.alive) {
-        garbage.x += 5
-        trashArray.push(garbage)
-        console.log(trashArray.length)
+        garbage.x += 3 
     }
-    for (let i = 0; i < trashArray.length; i++) {
-        garbage[i]
-        if (garbage.alive && garbage.x + garbage.width >= ctx.width) {
-            garbage.alive = false
-        }
-    }
-
 }
-
 
 // BeachGoer Movement
 function beachGoersRender (x, y, color, width, height) {
