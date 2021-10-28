@@ -20,6 +20,11 @@ let trashArray = []
 let beachGoerArray = []
 let points = 0
 
+const beachGoerImage = new Image()
+beachGoerImage.src = '/css/images/beachGoer.png'
+const trashImage = new Image()
+trashImage.src = '/css/images/soda_cup.png' 
+
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300)
@@ -29,6 +34,7 @@ const gameLoop = () => {
         trashitem.render()
         trashitem.x += 3
         ditectTrashHit()
+        // trashAwayFromBeachGoer()
     })
     beachGoerArray.forEach((beachPerson) => {
         beachPerson.render()
@@ -67,7 +73,7 @@ function gameTimer () {
     }, 1000)
 }
 
-// 
+//creating Galleria player
 function Galleria (x, y, color, width, height) {
     this.x = x
     this.y = y
@@ -82,7 +88,7 @@ function Galleria (x, y, color, width, height) {
 }
 let galleria = new Galleria(250, 50, '#FFFFFF', 10, 30)
 
-
+// movement for Galleria
 const galleriaMovement = (e) => {
     switch(e.keyCode) {
         case (38): 
@@ -142,12 +148,14 @@ function BeachGoer (x, y, color, width, height) {
     this.render = function() {
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
+
+
     }
 }
 
 const createBeachGoer = () => {
     let generateRandomY = Math.floor(Math.random() * ctx.height)
-    let beachGoers = new BeachGoer(1, generateRandomY, 'lightgreen', 20, 40)
+    let beachGoers = new BeachGoer(1, generateRandomY,'lightgreen', 20, 30)
     if (beachGoers.y <=0) {
         beachGoers.y = 0
     }
@@ -156,7 +164,7 @@ const createBeachGoer = () => {
     }
     beachGoerArray.push(beachGoers)
 }
-const beachGoerInterval = setInterval(createBeachGoer, 2000)
+const beachGoerInterval = setInterval(createBeachGoer, 2500)
 
 // detecting if trash is hit than one point will add to trash points
 const ditectTrashHit = () => {
@@ -170,12 +178,6 @@ const ditectTrashHit = () => {
                     trashArray.splice(i, 1)
                     points++
                 }
-            }
-        if (beachGoerArray[i].x < trashArray[i].x + trashArray[i].width &&
-            beachGoerArray[i].x + beachGoerArray[i].width > trashArray[i].x && 
-            beachGoerArray[i].y < trashArray[i].y + trashArray[i].height &&
-            beachGoerArray[i].y + beachGoerArray[i].height > trashArray[i].y) {
-                
             }
         }
     }
@@ -200,6 +202,35 @@ const ditectBeachGoerHit = () => {
         }
     }
 }
+
+// if (trashArray.x !== beachGoerArray.x 
+//     || trashArray.y !== beachGoerArray.y
+//     || trashArray.y + trashArray.height !== beachGoerArray.y + beachGoerArray.height
+//     || trashArray.x + trashArray.width !== beachGoerArray.x + beachGoerArray.width
+//     || trashArray.x + trashArray.height + trashArray.y + trashArray.height) {
+//         console.log('they can keep going')
+// } else {
+//     let keepGoing = 0
+//     for(let i = 0; i < trashArray.length; i++) {
+//         if (beachGoerArray[i].x < trashArray[i].x + trashArray[i].width &&
+//             beachGoerArray[i].x + beachGoerArray[i].width > trashArray[i].x && 
+//             beachGoerArray[i].y < trashArray[i].y + trashArray[i].height &&
+//             beachGoerArray[i].y + beachGoerArray[i].height > trashArray[i].y) {
+//                 console.log('they are connected')
+//                 break
+//             } else {
+//                 keepGoing++
+//                 console.log('this is keepGoing:', keepGoing)
+//             if (keepGoing === trashArray.x !== beachGoerArray.x 
+//                 || trashArray.y !== beachGoerArray.y
+//                 || trashArray.y + trashArray.height !== beachGoerArray.y + beachGoerArray.height
+//                 || trashArray.x + trashArray.width !== beachGoerArray.x + beachGoerArray.width
+//                 || trashArray.x + trashArray.height + trashArray.y + trashArray.height) {
+//                     console.log('they can keep going2')
+//             }
+//         }
+//     }
+// }
 
 
 function winningConditions () {

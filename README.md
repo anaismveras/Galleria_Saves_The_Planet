@@ -24,8 +24,8 @@ How to Play: Move Galleria up and down to help her pick up trash and avoid hitti
 
 ## Stretch Goals
 
-- Have time more faster the lower the timer gets
-- Have a 
+- 
+- 
 - 
 - 
 
