@@ -21,6 +21,7 @@ let trashArray = []
 let beachGoerArray = []
 let points = 0
 
+// Game Sounds
 function sound(src) {
     this.sound = document.createElement('audio')
     this.sound.src = src
@@ -38,8 +39,9 @@ function sound(src) {
 
 trashSound = new sound('/css/sounds/trashbag_throw.mp3')
 beachGoerHit = new sound('/css/sounds/beachGoer_Yelling_Ouch.mp3')
-gameMusic = new sound('css/sounds/beachMusi.mp3')
-
+gameMusic = new sound('css/sounds/gameMusi.mp3')
+losingSound = new sound('css/sounds/loseSound.mp3')
+winingSound = new sound('css/sounds/winSound.mp3')
 
 //game loop
 const gameLoop = () => {
@@ -55,7 +57,6 @@ const gameLoop = () => {
             trashitem.x += 7
         } 
         ditectTrashHit()
-        // trashAwayFromBeachGoer()
     })
     beachGoerArray.forEach((beachPerson) => {
         beachPerson.render()
@@ -274,13 +275,12 @@ const ditectBeachGoerHit = () => {
     }
 }
 
-
 function winningConditions () {
     if (points == 30) {
         clearInterval(gameInterval)
         clearInterval(timerForGame)
         winningh3.style.display = "block"
-
+        winingSound.play()
     }
 }
 
@@ -288,6 +288,7 @@ function losingConditions () {
     if (timeGame.innerText == `Time: 0:00`) {
         clearInterval(gameInterval)
         losingh3.style.display = "block"
+        losingSound.play()
     }
 }
 
