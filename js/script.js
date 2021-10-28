@@ -3,14 +3,19 @@ const trashPoints = document.getElementById('trash')
 const timeGame = document.getElementById('time')
 const startGame = document.getElementById('startButton')
 const inscrtuions = document.getElementById('status')
+const winningh3 = document.getElementById('winning')
+const losingh3 = document.getElementById('losing')
+winningh3.style.display = 'none'
+losingh3.style.display = 'none'
+let timerForGame 
+let gameInterval
+
 const ctx = game.getContext('2d')
 
 game.setAttribute('width', 300)
 game.setAttribute('height', 150)
 ctx.width = game.width
 ctx.height = game.height
-ctx.minY = game.height + 5
-ctx.maxY = game.height - 5
 let trashArray = []
 let beachGoerArray = []
 let points = 0
@@ -18,22 +23,30 @@ let points = 0
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300)
+    winningConditions()
+    losingConditions()
     trashArray.forEach((trashitem) => {
         trashitem.render()
         trashitem.x += 3
         ditectTrashHit()
     })
-    trashPoints.innerText = `Trash: ${points}/40`
+    beachGoerArray.forEach((beachPerson) => {
+        beachPerson.render()
+        beachPerson.x += 3
+        ditectBeachGoerHit()
+    })
+    trashPoints.innerText = `Trash: ${points}/30`
     galleria.render()
-    inscrtuions.innerText = ' '
+    inscrtuions.innerText = ''
 }
+
 
 // timer to go down after instructions
 function gameTimer () {
     let timeMinute = 1;
     let timeSecond = 30
     let displayedSeconds = String(timeSecond)
-    let timerForGame = setInterval(() => {
+    timerForGame = setInterval(() => {
         displayedSeconds = String(timeSecond)
         if (timeSecond == 00) {
             timeSecond = 60
@@ -50,11 +63,12 @@ function gameTimer () {
         }
         timeGame.innerText = `Time: ${timeMinute}:${displayedSeconds}`
         timeSecond--
+        // console.log(timeGame.innerText)
     }, 1000)
 }
 
-// getting Galleria on the board 
-function heroRender (x, y, color, width, height) {
+// 
+function Galleria (x, y, color, width, height) {
     this.x = x
     this.y = y
     this.color = color
@@ -66,9 +80,9 @@ function heroRender (x, y, color, width, height) {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
-let galleria = new heroRender(250, 50, '#FFFFFF', 10, 30)
+let galleria = new Galleria(250, 50, '#FFFFFF', 10, 30)
 
-// console.log('this is hero', galleria)
+
 const galleriaMovement = (e) => {
     switch(e.keyCode) {
         case (38): 
@@ -103,6 +117,7 @@ function Trash (x, y, color, width, height) {
     }
 }
 
+// creating a trash and letting it slide into the screen at random y-axis
 const createTrash = () => {
     let generateRandomY = Math.floor(Math.random() * ctx.height)
     let garbage = new Trash(1, generateRandomY, 'red', 10, 20)
@@ -113,25 +128,8 @@ const createTrash = () => {
         garbage.y = ctx.height - garbage.height
     }
     trashArray.push(garbage)
-    console.log(trashArray)
 }
-const trashInterval = setInterval(createTrash, 2500)
-
-// detecting if trash is hit than one point will minus from trash
-const ditectTrashHit = () => {
-    for(let i = 0; i < trashArray.length; i++) {
-        if (galleria.x < trashArray[i].x + trashArray[i].width &&
-            galleria.x + galleria.width > trashArray[i].x && 
-            galleria.y < trashArray[i].y + trashArray[i].height &&
-            galleria.y + galleria.height > trashArray[i].y) {
-                trashArray[i].alive = false 
-                if (trashArray[i].alive === false) {
-                    trashArray.splice(i, 1)
-                    points++
-                }
-        }
-    }
-}
+const trashInterval = setInterval(createTrash, 1500)
 
 // BeachGoer Movement
 function BeachGoer (x, y, color, width, height) {
@@ -157,16 +155,71 @@ const createBeachGoer = () => {
         beachGoers.y = ctx.height - beachGoers.height
     }
     beachGoerArray.push(beachGoers)
-    console.log(beachGoerArray)
 }
-const beachGoerInterval = setInterval(createBeachGoer, 1250)
+const beachGoerInterval = setInterval(createBeachGoer, 2000)
+
+// detecting if trash is hit than one point will add to trash points
+const ditectTrashHit = () => {
+    for(let i = 0; i < trashArray.length; i++) {
+        if (galleria.x < trashArray[i].x + trashArray[i].width &&
+            galleria.x + galleria.width > trashArray[i].x && 
+            galleria.y < trashArray[i].y + trashArray[i].height &&
+            galleria.y + galleria.height > trashArray[i].y) {
+                trashArray[i].alive = false 
+                if (trashArray[i].alive === false) {
+                    trashArray.splice(i, 1)
+                    points++
+                }
+            }
+        if (beachGoerArray[i].x < trashArray[i].x + trashArray[i].width &&
+            beachGoerArray[i].x + beachGoerArray[i].width > trashArray[i].x && 
+            beachGoerArray[i].y < trashArray[i].y + trashArray[i].height &&
+            beachGoerArray[i].y + beachGoerArray[i].height > trashArray[i].y) {
+                
+            }
+        }
+    }
+
+// detecting if beachGoers are hit than points will minus trash points
+const ditectBeachGoerHit = () => {
+    for(let i = 0; i < beachGoerArray.length; i++) {
+        if (galleria.x < beachGoerArray[i].x + beachGoerArray[i].width &&
+            galleria.x + galleria.width > beachGoerArray[i].x && 
+            galleria.y < beachGoerArray[i].y + beachGoerArray[i].height &&
+            galleria.y + galleria.height > beachGoerArray[i].y) {
+                beachGoerArray[i].alive = false 
+            if (beachGoerArray[i].alive === false) {
+                beachGoerArray.splice(i, 1)
+                if (points >= 2) {
+                    points--
+                    points--
+                } else if (points == 1) {
+                    points--
+                }
+            }
+        }
+    }
+}
 
 
-let stop = () => {clearInterval(gameInterval)}
+function winningConditions () {
+    if (points == 30) {
+        clearInterval(gameInterval)
+        clearInterval(timerForGame)
+        winningh3.style.display = "block"
+
+    }
+}
+
+function losingConditions () {
+    if (timeGame.innerText == `Time: 0:00`) {
+        clearInterval(gameInterval)
+        losingh3.style.display = "block"
+    }
+}
 
 document.addEventListener('keydown', galleriaMovement)
-let gameInterval = () => {setInterval(gameLoop, 70)}
 startGame.addEventListener('click', () => {
     gameTimer()
-    gameInterval()
+    gameInterval = setInterval(gameLoop, 70)
 })
