@@ -21,10 +21,6 @@ let trashArray = []
 let beachGoerArray = []
 let points = 0
 
-const beachGoerImage = new Image()
-beachGoerImage.src = '/css/images/beachGoer.png'
-const trashImage = new Image()
-trashImage.src = '/css/images/soda_cup.png' 
 
 //game loop
 const gameLoop = () => {
@@ -82,6 +78,9 @@ function gameTimer () {
     }, 1000)
 }
 
+const galleriaImage = new Image()
+    galleriaImage.src = ('/css/images/galleria.png')
+
 //creating Galleria player
 function Galleria (x, y, color, width, height) {
     this.x = x
@@ -109,75 +108,105 @@ const galleriaMovement = (e) => {
         }
         break 
         case (40):
-        // moves her downwards
-        galleria.y += 10
-        // prevents her from going off canvas-down
-        if (galleria.y + galleria.height >= ctx.height) {
-            galleria.y = ctx.height - galleria.height
+            // moves her downwards
+            galleria.y += 10
+            // prevents her from going off canvas-down
+            if (galleria.y + galleria.height >= ctx.height) {
+                galleria.y = ctx.height - galleria.height
+            }
+            break
         }
-        break
     }
-}
+    
+    const trashImage = new Image()
+    trashImage.src = ('/css/images/soda_cup.png') 
 
-function Trash (x, y, color, width, height) {
-    this.x = x
-    this.y = y
-    this.height = height
-    this.color = color
-    this.width = width
-    this.alive = true
-    this.render = function() {
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+    function Trash (url, x, y, width, height) {
+        this.url = url
+        this.x = x
+        this.y = y
+        this.height = height
+        this.width = width
+        this.alive = true
+        this.render = function() {
+            ctx.drawImage(this.url, this.x, this.y, this.width, this.height)
+        }
     }
-}
-
-// creating a trash and letting it slide into the screen at random y-axis
-const createTrash = () => {
-    let generateRandomY = Math.floor(Math.random() * ctx.height)
-    let garbage = new Trash(1, generateRandomY, 'red', 10, 20)
-    if (garbage.y <=0) {
-        garbage.y = 0
+    
+    // creating a trash and letting it slide into the screen at random y-axis
+    const createTrash = () => {
+        let generateRandomY = Math.floor(Math.random() * ctx.height)
+        let garbage = new Trash(trashImage, 1, generateRandomY, 10, 20)
+        if (garbage.y <=0) {
+            garbage.y = 0
+        }
+        if (garbage.y + garbage.height >= ctx.height) {
+            garbage.y = ctx.height - garbage.height
+        }
+        // the following line will only run after passing findEmptySpot on garbage and trashArray and garbage and beachGoerArray
+        if (findEmptySpot(garbage, trashArray) && findEmptySpot(garbage, beachGoerArray)) {
+            trashArray.push(garbage)
+        }
     }
-    if (garbage.y + garbage.height >= ctx.height) {
-        garbage.y = ctx.height - garbage.height
-    }
-    trashArray.push(garbage)
-}
-const trashInterval = 
+    const trashInterval = 
     setInterval(createTrash, 6000)
     if (timeGame.innerText >= 'Time: 0:45') {
         setInterval(createTrash, 4000)
     } else {
         setInterval(createTrash, 2000)
     } 
+    
+    const findEmptySpot = (thing, thingArr) => {
+        // thing will be either trash or beachGoer
+        // findEmptySpot runs if trash can be created
+        // findEmptySpot checks x & y width and height of beachGoers and trash
+        // returns if spot is empty, returns false is spot is full
+        // when calling fineEmptySpot an ex. is like this:
+        // findEmptySpot(garbage, beachGoer)
+        // or like this fidnEmptySport(garbage, trashArray)
+        // of like this findEmptySport (beachGoer, beachGoerArray)
+        for(let i = 0; i < thingArr.length; i++) {
+            if (thing.x < thingArr[i].x + thingArr[i].width &&
+                thing.x + thing.width > thingArr[i].x && 
+                thing.y < thingArr[i].y + thingArr[i].height &&
+                thing.y + thing.height > thingArr[i].y) {
+                    return false 
+                }
 
-// BeachGoer Movement
-function BeachGoer (x, y, color, width, height) {
-    this.x = x
-    this.y = y
-    this.color = color
-    this.height = height
+            }
+            return true
+    }
+
+
+    const beachGoerImage = new Image()
+    beachGoerImage.src = ('/css/images/beachGoer.png')
+
+    // BeachGoer Movement
+    function BeachGoer (url, x, y, width, height) {
+        this.url = url
+        this.x = x
+        this.y = y
+        this.height = height
     this.width = width
     this.alive = true
     this.render = function() {
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-
-
+        ctx.drawImage(this.url, this.x, this.y, this.width, this.height)
     }
 }
 
 const createBeachGoer = () => {
     let generateRandomY = Math.floor(Math.random() * ctx.height)
-    let beachGoers = new BeachGoer(1, generateRandomY,'lightgreen', 20, 30)
+    let beachGoers = new BeachGoer(beachGoerImage, 1, generateRandomY, 30, 40)
     if (beachGoers.y <=0) {
         beachGoers.y = 0
     }
     if (beachGoers.y + beachGoers.height >= ctx.height) {
         beachGoers.y = ctx.height - beachGoers.height
     }
-    beachGoerArray.push(beachGoers)
+    // the line below will only run after calling findEmptySpot on beachGoerArray and BeachGoer and trashArray
+    if (findEmptySpot(beachGoers, trashArray) && findEmptySpot(beachGoers, beachGoerArray)) {
+        beachGoerArray.push(beachGoers)
+    }
 }
 const beachGoerInterval = 
     setInterval(createBeachGoer, 2500)
@@ -223,35 +252,6 @@ const ditectBeachGoerHit = () => {
         }
     }
 }
-
-// if (trashArray.x !== beachGoerArray.x 
-//     || trashArray.y !== beachGoerArray.y
-//     || trashArray.y + trashArray.height !== beachGoerArray.y + beachGoerArray.height
-//     || trashArray.x + trashArray.width !== beachGoerArray.x + beachGoerArray.width
-//     || trashArray.x + trashArray.height + trashArray.y + trashArray.height) {
-//         console.log('they can keep going')
-// } else {
-//     let keepGoing = 0
-//     for(let i = 0; i < trashArray.length; i++) {
-//         if (beachGoerArray[i].x < trashArray[i].x + trashArray[i].width &&
-//             beachGoerArray[i].x + beachGoerArray[i].width > trashArray[i].x && 
-//             beachGoerArray[i].y < trashArray[i].y + trashArray[i].height &&
-//             beachGoerArray[i].y + beachGoerArray[i].height > trashArray[i].y) {
-//                 console.log('they are connected')
-//                 break
-//             } else {
-//                 keepGoing++
-//                 console.log('this is keepGoing:', keepGoing)
-//             if (keepGoing === trashArray.x !== beachGoerArray.x 
-//                 || trashArray.y !== beachGoerArray.y
-//                 || trashArray.y + trashArray.height !== beachGoerArray.y + beachGoerArray.height
-//                 || trashArray.x + trashArray.width !== beachGoerArray.x + beachGoerArray.width
-//                 || trashArray.x + trashArray.height + trashArray.y + trashArray.height) {
-//                     console.log('they can keep going2')
-//             }
-//         }
-//     }
-// }
 
 
 function winningConditions () {
