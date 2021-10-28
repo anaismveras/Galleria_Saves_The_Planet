@@ -21,12 +21,32 @@ let trashArray = []
 let beachGoerArray = []
 let points = 0
 
+function sound(src) {
+    this.sound = document.createElement('audio')
+    this.sound.src = src
+    this.sound.setAttribute('preload', 'auto')
+    this.sound.setAttribute('controls', 'none')
+    this.sound.style.display = 'none'
+    document.body.appendChild(this.sound)
+    this.play = function() {
+        this.sound.play()
+    }
+    this.stop = function() {
+        this.sound.pause()
+    }
+}
+
+trashSound = new sound('/css/sounds/trashbag_throw.mp3')
+beachGoerHit = new sound('/css/sounds/beachGoer_Yelling_Ouch.mp3')
+gameMusic = new sound('css/sounds/beachMusi.mp3')
+
 
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300)
     winningConditions()
     losingConditions()
+    gameMusic.play()
     trashArray.forEach((trashitem) => {
         trashitem.render()
         if (timeGame.innerText >= 'Time: 0:45') {
@@ -82,19 +102,18 @@ const galleriaImage = new Image()
     galleriaImage.src = ('/css/images/galleria.png')
 
 //creating Galleria player
-function Galleria (x, y, color, width, height) {
+function Galleria (url, x, y, width, height) {
+    this.url = url
     this.x = x
     this.y = y
-    this.color = color
     this.height = height
     this.width = width
     this.alive = true
     this.render = function() {
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.drawImage(this.url, this.x, this.y, this.width, this.height)
     }
 }
-let galleria = new Galleria(250, 50, '#FFFFFF', 10, 30)
+let galleria = new Galleria(galleriaImage ,250, 50, 20, 30)
 
 // movement for Galleria
 const galleriaMovement = (e) => {
@@ -227,6 +246,7 @@ const ditectTrashHit = () => {
                 if (trashArray[i].alive === false) {
                     trashArray.splice(i, 1)
                     points++
+                    trashSound.play()
                 }
             }
         }
@@ -242,6 +262,7 @@ const ditectBeachGoerHit = () => {
                 beachGoerArray[i].alive = false 
             if (beachGoerArray[i].alive === false) {
                 beachGoerArray.splice(i, 1)
+                beachGoerHit.play()
                 if (points >= 2) {
                     points--
                     points--
