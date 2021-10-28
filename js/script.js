@@ -2,6 +2,7 @@ const game = document.getElementById('canvas')
 const trashPoints = document.getElementById('trash')
 const timeGame = document.getElementById('time')
 const startGame = document.getElementById('startButton')
+const resetGame = document.getElementById('resetButton')
 const inscrtuions = document.getElementById('status')
 const winningh3 = document.getElementById('winning')
 const losingh3 = document.getElementById('losing')
@@ -32,13 +33,21 @@ const gameLoop = () => {
     losingConditions()
     trashArray.forEach((trashitem) => {
         trashitem.render()
-        trashitem.x += 3
+        if (timeGame.innerText >= 'Time: 0:45') {
+            trashitem.x += 3
+        } else {
+            trashitem.x += 7
+        } 
         ditectTrashHit()
         // trashAwayFromBeachGoer()
     })
     beachGoerArray.forEach((beachPerson) => {
         beachPerson.render()
-        beachPerson.x += 3
+        if (timeGame.innerText > 'Time: 0:45') {
+            beachPerson.x += 3
+        } else {
+            beachPerson.x += 7
+        }
         ditectBeachGoerHit()
     })
     trashPoints.innerText = `Trash: ${points}/30`
@@ -135,7 +144,13 @@ const createTrash = () => {
     }
     trashArray.push(garbage)
 }
-const trashInterval = setInterval(createTrash, 1500)
+const trashInterval = 
+    setInterval(createTrash, 6000)
+    if (timeGame.innerText >= 'Time: 0:45') {
+        setInterval(createTrash, 4000)
+    } else {
+        setInterval(createTrash, 2000)
+    } 
 
 // BeachGoer Movement
 function BeachGoer (x, y, color, width, height) {
@@ -164,7 +179,13 @@ const createBeachGoer = () => {
     }
     beachGoerArray.push(beachGoers)
 }
-const beachGoerInterval = setInterval(createBeachGoer, 2500)
+const beachGoerInterval = 
+    setInterval(createBeachGoer, 2500)
+    if (timeGame.innerText >= 'Time: 0:45') {
+        setInterval(createBeachGoer, 2000)
+    } else {
+        setInterval(createBeachGoer, 2000)
+    } 
 
 // detecting if trash is hit than one point will add to trash points
 const ditectTrashHit = () => {
@@ -253,4 +274,7 @@ document.addEventListener('keydown', galleriaMovement)
 startGame.addEventListener('click', () => {
     gameTimer()
     gameInterval = setInterval(gameLoop, 70)
+})
+resetGame.addEventListener('click', ()=> {
+    window.location.reload()
 })

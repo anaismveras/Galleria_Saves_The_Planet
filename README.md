@@ -19,13 +19,11 @@ How to Play: Move Galleria up and down to help her pick up trash and avoid hitti
 - if a collision happens with trash Galleria gains trash(points) else if collision happens with Beach Goers Galleria loses trash(points)
 - Render that if Galleria has collision with trash, trash remove from canvas else if collsion with Beach Goer trash comes back to canvas
 - If Galleria picks up max amount of trash in selected time, game ends, trash and Beach Goers stop
-- User has the ability to press start again to play
+- User has the ability to press start Game button to play again to play
 
 
 ## Stretch Goals
 
-- 
-- 
-- 
-- 
+- Make the items for faster the less time on the timer
+- Have a noise sound for when the player steps on a BeachGoer or when they pick up trash
 
