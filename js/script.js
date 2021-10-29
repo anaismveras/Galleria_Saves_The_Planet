@@ -30,11 +30,11 @@ function sound(src) {
   this.sound.style.display = "none";
   document.body.appendChild(this.sound);
   this.play = function () {
-    this.sound.play();
-  };
-  this.stop = function () {
-    this.sound.pause();
-  };
+      this.sound.play();
+    };
+    this.stop = function () {
+        this.sound.pause();
+    };
 }
 
 trashSound = new sound("/css/sounds/trashbag_throw.mp3");
@@ -43,11 +43,10 @@ gameMusic = new sound("css/sounds/gameMusi.mp3");
 losingSound = new sound("css/sounds/loseSound.mp3");
 winingSound = new sound("css/sounds/winSound.mp3");
 
+
 //game loop
 const gameLoop = () => {
     ctx.clearRect(0, 0, 750, 300);
-    winningConditions();
-    losingConditions();
     gameMusic.play();
     trashArray.forEach((trashitem) => {
         trashitem.render();
@@ -67,11 +66,11 @@ const gameLoop = () => {
         }
         ditectBeachGoerHit();
     });
+    losingConditions();
+    winningConditions();
     trashPoints.innerText = `Trash: ${points}/30`;
     galleria.render();
     inscrtuions.innerText = " ";
-    winningh3.style.display = "none";
-    losingh3.style.display = "none";
 };
 
 // timer to go down after instructions
@@ -99,6 +98,8 @@ function gameTimer() {
     // console.log(timeGame.innerText)
   }, 1000);
 }
+
+//////////Galleria//////////
 
 const galleriaImage = new Image();
 galleriaImage.src = "/css/images/galleria.png";
@@ -139,6 +140,9 @@ const galleriaMovement = (e) => {
   }
 };
 
+
+//////////Trash//////////
+
 const trashImage = new Image();
 trashImage.src = "/css/images/soda_cup.png";
 
@@ -178,6 +182,8 @@ if (timeGame.innerText >= "Time: 0:45") {
   setInterval(createTrash, 2000);
 }
 
+
+//Function that checks if there is an empty spot on the canvas
 const findEmptySpot = (thing, thingArr) => {
   for (let i = 0; i < thingArr.length; i++) {
     if (
@@ -191,6 +197,9 @@ const findEmptySpot = (thing, thingArr) => {
   }
   return true;
 };
+
+
+//////////////BeachGoer/////////////
 
 const beachGoerImage = new Image();
 beachGoerImage.src = "/css/images/beachGoer.png";
@@ -274,8 +283,9 @@ const ditectBeachGoerHit = () => {
   }
 };
 
+/////Game Conditions///////
 function winningConditions() {
-  if (points == 30 && timeGame.innerText >= `Time: 0:00`) {
+  if (points === 30 && timeGame.innerText >= `Time: 0:00`) {
     clearInterval(gameInterval);
     clearInterval(timerForGame);
     winningh3.style.display = "block";
@@ -284,7 +294,7 @@ function winningConditions() {
 }
 
 function losingConditions() {
-  if (timeGame.innerText == `Time: 0:00` && points < 30) {
+  if (points < 30 && points > 0 && timeGame.innerText == `Time: 0:00`) {
     clearInterval(gameInterval);
     losingh3.style.display = "block";
     losingSound.play();
@@ -297,13 +307,14 @@ startGame.addEventListener("click", () => {
   gameTimer();
   gameInterval = setInterval(gameLoop, 70);
 });
+
+// reset button
 resetGame.addEventListener("click", () => {
+    losingh3.style.display = "none";
+    winningh3.style.display = "none";
     trashArray = [];
     beachGoerArray = [];
     points = 0;
     clearInterval(gameInterval);
-    clearInterval(timerForGame);
-    losingh3.style.display = "none";
-    winningh3.style.display = "none";
     inscrtuions.innerText = "Press the 'Start Game' to restart the game"
 });
