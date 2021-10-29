@@ -45,31 +45,33 @@ winingSound = new sound("css/sounds/winSound.mp3");
 
 //game loop
 const gameLoop = () => {
-  ctx.clearRect(0, 0, 750, 300);
-  winningConditions();
-  losingConditions();
-  gameMusic.play();
-  trashArray.forEach((trashitem) => {
-    trashitem.render();
-    if (timeGame.innerText >= "Time: 0:45") {
-      trashitem.x += 3;
-    } else {
-      trashitem.x += 7;
-    }
-    ditectTrashHit();
-  });
-  beachGoerArray.forEach((beachPerson) => {
-    beachPerson.render();
-    if (timeGame.innerText > "Time: 0:45") {
-      beachPerson.x += 3;
-    } else {
-      beachPerson.x += 7;
-    }
-    ditectBeachGoerHit();
-  });
-  trashPoints.innerText = `Trash: ${points}/30`;
-  galleria.render();
-  inscrtuions.innerText = "";
+    ctx.clearRect(0, 0, 750, 300);
+    winningConditions();
+    losingConditions();
+    gameMusic.play();
+    trashArray.forEach((trashitem) => {
+        trashitem.render();
+        if (timeGame.innerText >= "Time: 0:45") {
+            trashitem.x += 3;
+        } else {
+            trashitem.x += 7;
+        }
+        ditectTrashHit();
+    });
+    beachGoerArray.forEach((beachPerson) => {
+        beachPerson.render();
+        if (timeGame.innerText > "Time: 0:45") {
+            beachPerson.x += 3;
+        } else {
+            beachPerson.x += 7;
+        }
+        ditectBeachGoerHit();
+    });
+    trashPoints.innerText = `Trash: ${points}/30`;
+    galleria.render();
+    inscrtuions.innerText = " ";
+    winningh3.style.display = "none";
+    losingh3.style.display = "none";
 };
 
 // timer to go down after instructions
@@ -273,7 +275,7 @@ const ditectBeachGoerHit = () => {
 };
 
 function winningConditions() {
-  if (points == 30) {
+  if (points == 30 && timeGame.innerText >= `Time: 0:00`) {
     clearInterval(gameInterval);
     clearInterval(timerForGame);
     winningh3.style.display = "block";
@@ -282,7 +284,7 @@ function winningConditions() {
 }
 
 function losingConditions() {
-  if (timeGame.innerText == `Time: 0:00`) {
+  if (timeGame.innerText == `Time: 0:00` && points < 30) {
     clearInterval(gameInterval);
     losingh3.style.display = "block";
     losingSound.play();
@@ -301,7 +303,7 @@ resetGame.addEventListener("click", () => {
     points = 0;
     clearInterval(gameInterval);
     clearInterval(timerForGame);
-    winningh3.style.display = "none";
     losingh3.style.display = "none";
+    winningh3.style.display = "none";
     inscrtuions.innerText = "Press the 'Start Game' to restart the game"
 });
