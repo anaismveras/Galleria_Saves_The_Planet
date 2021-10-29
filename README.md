@@ -28,3 +28,11 @@ How to Play: Move Galleria up and down to help her pick up trash and avoid hitti
 - Have a noise sound for when the player steps on a BeachGoer or when they pick up trash
 - Have noise for losing condition and winning conditions
 
+## Live Site
+
+https://anaismveras.github.io/Galleria_Saves_The_Planet/
+
+And
+
+https://galleriasavestheplanet.netlify.app/
+
