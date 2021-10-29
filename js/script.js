@@ -289,11 +289,19 @@ function losingConditions() {
   }
 }
 
+// Event Lisenters for buttons
 document.addEventListener("keydown", galleriaMovement);
 startGame.addEventListener("click", () => {
   gameTimer();
   gameInterval = setInterval(gameLoop, 70);
 });
 resetGame.addEventListener("click", () => {
-  window.location.reload();
+    trashArray = [];
+    beachGoerArray = [];
+    points = 0;
+    clearInterval(gameInterval);
+    clearInterval(timerForGame);
+    winningh3.style.display = "none";
+    losingh3.style.display = "none";
+    inscrtuions.innerText = "Press the 'Start Game' to restart the game"
 });
