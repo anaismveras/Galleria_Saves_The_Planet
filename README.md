@@ -30,9 +30,5 @@ How to Play: Move Galleria up and down to help her pick up trash and avoid hitti
 
 ## Live Site
 
-https://anaismveras.github.io/Galleria_Saves_The_Planet/
-
-And
-
 https://galleriasavestheplanet.netlify.app/
 

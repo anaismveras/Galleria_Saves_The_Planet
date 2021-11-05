@@ -37,8 +37,8 @@ function sound(src) {
     };
 }
 
-trashSound = new sound("/css/sounds/trashbag_throw.mp3");
-beachGoerHit = new sound("/css/sounds/beachGoer_Yelling_Ouch.mp3");
+trashSound = new sound("css/sounds/trashbag_throw.mp3");
+beachGoerHit = new sound("css/sounds/beachGoer_Yelling_Ouch.mp3");
 gameMusic = new sound("css/sounds/gameMusi.mp3");
 losingSound = new sound("css/sounds/loseSound.mp3");
 winingSound = new sound("css/sounds/winSound.mp3");
@@ -102,7 +102,7 @@ function gameTimer() {
 //////////Galleria//////////
 
 const galleriaImage = new Image();
-galleriaImage.src = "/css/images/galleria.png";
+galleriaImage.src = "css/images/galleria.png";
 
 //creating Galleria player
 function Galleria(url, x, y, width, height) {
@@ -144,7 +144,7 @@ const galleriaMovement = (e) => {
 //////////Trash//////////
 
 const trashImage = new Image();
-trashImage.src = "/css/images/soda_cup.png";
+trashImage.src = "css/images/soda_cup.png";
 
 function Trash(url, x, y, width, height) {
   this.url = url;
@@ -202,7 +202,7 @@ const findEmptySpot = (thing, thingArr) => {
 //////////////BeachGoer/////////////
 
 const beachGoerImage = new Image();
-beachGoerImage.src = "/css/images/beachGoer.png";
+beachGoerImage.src = "css/images/beachGoer.png";
 
 // BeachGoer Movement
 function BeachGoer(url, x, y, width, height) {
